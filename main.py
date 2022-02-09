@@ -1,5 +1,5 @@
 import flask
-from tmdb import get_genre_info, get_movie_data
+from tmdb import get_movie_data
 
 app = flask.Flask(__name__)
 """routes interpret different pages of a page"""
@@ -13,12 +13,11 @@ def index():
 @app.route("/movie_one.html")
 def movie_one():
     """movie_one page"""
-    movie_genres = get_genre_info()
-    movie_data = get_movie_data()
+    external_id = "157336"
+    movie_data = get_movie_data(external_id)
     return flask.render_template(
         "movie_one.html",
         data=movie_data,
-        genre=movie_genres,
         )
 
 @app.route("/movie_two.html")
