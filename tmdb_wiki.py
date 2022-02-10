@@ -20,7 +20,8 @@ def get_movie_data(external_id):
     genre_names = ', '.join(genres)
     picture = "https://image.tmdb.org/t/p/w500" + response_json['poster_path']
     date = response_json['release_date'][0:4]
-    return  [title, overview, genre_names, picture, date]
+    production_company = response_json['production_companies'][0]['name']
+    return  [title, overview, genre_names, picture, date, production_company]
 
 def wiki_page(title, year):
     """wikipedia api"""
@@ -34,5 +35,4 @@ def wiki_page(title, year):
 
     the_response = requests.get(base_url, params=query_params)
     json_response = the_response.json()
-    print(movie)
     return json_response[3][0]
