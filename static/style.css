@@ -1,10 +1,39 @@
 body {
-    background-color: blue;
+    background-color: #FAF79B;
     font-family: "Courier", "monospace";
+    text-align: center;
+}
+.color{
+    color: #416a59;
 }
 
+.size{
+    font-size: 20px;
+}
+h1 {
+    text-decoration: underline;
+}
+
+h2{
+    font-size: 30px;
+}
 .container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
+}
+
+.positioning_right {
+    position: absolute;
+    right: 0%;
+    bottom: 40%;
+  }
+
+.positioning_left {
+    position: absolute;
+    left: 0%;
+    bottom: 40%;
+  } 
+.spacing{
+    padding-bottom: 1px;
 }
