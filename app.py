@@ -10,7 +10,7 @@ app = flask.Flask(__name__)
 @app.route("/")
 def index():
     """home page"""
-    external_ids = ["558", "557", "419430", "496243"]
+    external_ids = ["27205", "557", "419430", "496243"]
     external_id = random.choice(external_ids)
     movie_data = get_movie_data(external_id)
     wiki_link = wiki_page(movie_data[0], movie_data[4])
