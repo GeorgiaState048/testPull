@@ -10,10 +10,6 @@
                 <ul>
                     <li><a href="">Intro Page</a></li>
                     <li><a href="movie_one.html">Movie #1</a></li>
-                    <li><a href="movie_two.html">Movie #2</a></li>
-                    <li><a href="movie_three.html">Movie #3</a></li>
-                    <li><a href="movie_four.html">Movie #4</a></li>
-                    <li><a href="movie_five.html">Movie #5</a></li>
                 </ul>
             </nav>
         </header>
@@ -22,6 +18,7 @@
                 <p><b>{{ data[0] }}</b></p>
                 <p><b>{{ data[1] }}</b></p>
                 <p><b>{{ data[2] }}</b></p>
+                <p><a href={{ link }}>Wikipedia Link for {{ data[0] }}</a></p>
                 <p><img src = {{ data[3] }}></p>
             </div>
         </section>
