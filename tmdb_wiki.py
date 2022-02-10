@@ -13,8 +13,8 @@ def get_movie_data(external_id):
     response_json = response.json()
     genre_ids = response_json['genres']
     genres = []
-    for i, value in enumerate(genre_ids):
-        genres.append(genre_ids[i]['name'])
+    for i in genre_ids:
+        genres.append(i['name'])
     title = response_json['title']
     overview = response_json['overview']
     genre_names = ', '.join(genres)
@@ -36,26 +36,3 @@ def wiki_page(title, year):
     json_response = the_response.json()
     print(movie)
     return json_response[3][0]
-
-"""base_url = "https://en.wikipedia.org/w/api.php"
-query_params = {
-    "action": "opensearch",
-    "search": "Parasite 2019",
-    "format": "json",
-}
-
-the_response = requests.get(base_url, params=query_params)
-json_response = the_response.json()
-print(json_response)"""
-
-"""base_url = "https://api.themoviedb.org/3/movie/" + "496243" + \
-        "?api_key="+os.getenv("TMDB_KEY")+"&language=en-US"
-response = requests.get(base_url)
-response_json = response.json()
-genre_ids = response_json['genres']
-genres = []
-for i, value in enumerate(genre_ids):
-    genres.append(genre_ids[i]['name'])
-title = response_json['title']
-print(title)"""
-
