@@ -31,17 +31,22 @@ def load_user(user_id):
     """load_user"""
     return User.query.get(int(user_id)) # might have to change the cast
 
+class AllData(db.Model):
+    """class person"""
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(120), unique=False, nullable=False)
+    movie_id = db.Column(db.String(80), unique=False, nullable=False)
+    user = db.Column(db.String(80), unique=False, nullable=False)
+    rating = db.Column(db.String(80), unique=False, nullable=False)
+
 class User(db.Model, UserMixin):
     """user class"""
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique = True)
-    password = db.Column(db.String(80), nullable=False, unique = False)
 
 class RegisterForm(FlaskForm):
     """register form"""
     username=StringField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Username"})
-    password=StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
     submit=SubmitField("Register")
 
@@ -58,8 +63,6 @@ class LoginForm(FlaskForm):
     """login form"""
     username=StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
-    password=StringField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Password"})
     submit=SubmitField("Login")
 
 db.create_all()
@@ -70,16 +73,35 @@ def index():
     """landing page"""
     return flask.render_template("index.html")
 
-@app.route("/homepage")
-def home_page():
+@app.route("/homepage/<name>", methods=['GET', 'POST'])
+def home_page(name):
     """home page"""
     external_ids = ["27205", "557", "419430", "496243"]
-    external_id = random.choice(external_ids)
-    movie_data = get_movie_data(external_id)
+    new_id = random.choice(external_ids)
+    movie_data = get_movie_data(new_id)
     wiki_link = wiki_page(movie_data[0], movie_data[4])
+    if flask.request.method == "POST":
+        data = flask.request.form
+        this_id = flask.request.form['movie_id']
+        add_comment = data.get("comment")
+        add_rating = data.get("rating")
+        if not add_comment:
+            add_comment = name + " did not leave a comment!"
+        if not add_rating:
+            add_rating = name + " did not leave a rating!"
+        if add_comment and add_rating:
+            new_review = AllData(comment=add_comment, rating=add_rating, movie_id=this_id, user=name)
+            db.session.add(new_review)
+            db.session.commit()
+    review_data = AllData.query.filter_by(movie_id=new_id, user=name).all()
+    num_review_data = len(review_data)
     return flask.render_template(
         "home.html",
-        data=movie_data,
+        review_data=review_data,
+        num_review_data=num_review_data,
+        movie_id=new_id,
+        name=name,
+        movie_data=movie_data,
         link=wiki_link
         )
 
@@ -89,10 +111,10 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        name = form.username.data
         if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user)
-                return flask.redirect(flask.url_for('dashboard'))
+            login_user(user)
+            return flask.redirect(flask.url_for('home_page', name=name))
     return flask.render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -100,18 +122,21 @@ def register():
     """register page"""
     form = RegisterForm()
     if form.validate_on_submit():
-        hashed_password = str(bcrypt.generate_password_hash(form.password.data))
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data)
         db.session.add(new_user)
         db.session.commit()
         return flask.redirect(flask.url_for('login'))
     return flask.render_template('register.html', form=form)
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+
+@app.route('/logout', methods=['GET', 'POST'])
 @login_required
-def dashboard():
-    """dashboard"""
-    return flask.render_template('dashboard.html')
+def logout():
+    """logout"""
+    logout_user()
+    return flask.redirect(flask.url_for('login'))
+
+
 
 
 
