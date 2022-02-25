@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, ValidationError
 app = flask.Flask(__name__)
 
 # Point SQLAlchemy to your Heroku database
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://zevcghcsspxyhs:b9c4248c91bada3bd2a38b6ce4c95b5a3b5e793f7d6732c269450ec7738cfaf8@ec2-35-175-68-90.compute-1.amazonaws.com:5432/db65homnul3lba"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://zevcghcsspxyhs:b9c4248c91bada3bd2a38b6ce4c95b5a3b5e793f7d6732c269450ec7738cfaf8@ec2-35-175-68-90.compute-1.amazonaws.com:5432/db65homnul3lba"
 # Gets rid of a warning
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is a secret key!!!'
