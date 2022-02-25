@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    </head>
+    <body>
+        <header> 
+            <h1 class = "color">Welcome to Movie Discovery!</h1>
+            <p class = "color"><b>The website that shows you your favorite movies!?</b></p>
+            <h2 class = "color">{{ data[5] }} presents {{ data[0] }}</h2>
+        </header>
+        <section>
+            <div class = "color">
+                <p class = "size"><b>Overview: {{ data[1] }}</b></p>
+                <p class = "size"><b>Genre(s): {{ data[2] }}</b></p>
+                <p class = "size"><a href={{ link }}>Wikipedia Link for {{ data[0] }}</a></p>
+                <p><img src = {{ data[3] }} style="width:400px;height:600px;"></p>
+            </div>
+            <p class = "positioning_right size"><a href="">Refresh the page to find a new movie!</a></p>
+            <p class = "positioning_left size"><a href="">Refresh the page to find a new movie!</a></p>
+        </section>
+    </body> 
+</html>
