@@ -8,7 +8,7 @@ load_dotenv(find_dotenv())
 def get_movie_data(external_id):
     """returns info about a movie"""
     base_url = "https://api.themoviedb.org/3/movie/"+external_id+ \
-        "?api_key=" + os.getenv("TMDB_KEY") + "&language=en-US"
+        "?api_key=e3e0ecf40bbeb7110f2d1a749fe12eba&language=en-US"
     response = requests.get(base_url)
     response_json = response.json()
     genre_ids = response_json['genres']
