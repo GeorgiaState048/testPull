@@ -7,20 +7,18 @@ from tmdb_wiki import get_movie_data, wiki_page
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
-from flask_bcrypt import Bcrypt
 
 app = flask.Flask(__name__)
 
 # Point SQLAlchemy to your Heroku database
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://zevcghcsspxyhs:b9c4248c91bada3bd2a38b6ce4c95b5a3b5e793f7d6732c269450ec7738cfaf8@ec2-35-175-68-90.compute-1.amazonaws.com:5432/db65homnul3lba"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 # Gets rid of a warning
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is a secret key!!!'
 
 db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -67,7 +65,7 @@ class LoginForm(FlaskForm):
 
 db.create_all()
 
-"""routes interpret different pages of a page"""
+# routes interpret different pages of a page
 @app.route("/")
 def index():
     """landing page"""
@@ -93,7 +91,7 @@ def home_page(name):
             new_review = AllData(comment=add_comment, rating=add_rating, movie_id=this_id, user=name)
             db.session.add(new_review)
             db.session.commit()
-    review_data = AllData.query.filter_by(movie_id=new_id, user=name).all()
+    review_data = AllData.query.filter_by(movie_id=new_id).all()
     num_review_data = len(review_data)
     return flask.render_template(
         "home.html",
@@ -136,8 +134,8 @@ def logout():
     logout_user()
     return flask.redirect(flask.url_for('login'))
 
-
-
-
-
-app.run(debug=True)
+app.run(
+    host=os.getenv('IP', '0.0.0.0'),
+    port=int(os.getenv('PORT', 8000)),
+    debug=True
+)
