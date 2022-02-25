@@ -2,7 +2,7 @@ Flask
 python-dotenv
 requests
 flask_login
-flask_sqllchemy
+flask_sqlalchemy
 SQLAlchemy
 UserMixin
 login_user
