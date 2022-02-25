@@ -1,4 +1,4 @@
-Heroku Deployment URL: 
+Heroku Deployment URL: https://boiling-brushlands-22550.herokuapp.com/
 
 Setup Instructions(for windows users only): 
 open terminal and run the following commands: 
