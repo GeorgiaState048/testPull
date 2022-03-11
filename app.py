@@ -9,6 +9,8 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
+import json
+import flask_login
 
 app = flask.Flask(__name__)
 bp = flask.Blueprint(
@@ -95,13 +97,20 @@ def comments_ratings():
     """comments and ratings page"""
     return flask.render_template("index.html")
 
-@bp.route("/comments_and_ratings", methods=['GET', 'POST'])
+@bp.route("/comments_and_ratings")
 def comments_and_rating():
     """returns JSON data of all comments and ratings of current user"""
-    form = LoginForm()
-    name = form.username.data
+    comments = []
+    # form = LoginForm()
+    name = flask_login.current_user.username
+    print(name)
     review_data = AllData.query.filter_by(user=name).all()
-    return flask.jsonify(review_data)
+    num_review_data = len(review_data)
+    for i in range(num_review_data):
+        print([review_data[i].comment])
+        comments.append(review_data[i].comment)
+    return flask.jsonify({'items': comments})
+    # return flask.Response(json.dumps(info),  mimetype='application/json')
 
 @app.route("/homepage/<name>", methods=["GET", "POST"])
 def home_page(name):
@@ -126,6 +135,7 @@ def home_page(name):
             db.session.add(new_review)
             db.session.commit()
     review_data = AllData.query.filter_by(movie_id=new_id).all()
+    # print(review_data[0].rating)
     num_review_data = len(review_data)
     return flask.render_template(
         "home.html",
@@ -173,4 +183,4 @@ def logout():
 
 app.register_blueprint(bp)
 
-app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8000)), debug=True)
+app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8000)))
