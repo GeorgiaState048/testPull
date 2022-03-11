@@ -1,7 +1,8 @@
+/* eslint-disable */
 import React from 'react';
 
 export function FunFact(props) {
-    return (
+  return (
     <li>{props.fact}</li>
-    );
+  );
 }
