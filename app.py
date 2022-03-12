@@ -101,8 +101,11 @@ def comments_ratings():
 def comments_and_rating():
     """returns JSON data of all comments and ratings of current user"""
     comments = []
+<<<<<<< HEAD
     ratings = []
     movie_ids = []
+=======
+>>>>>>> b9aab1efef33caa61a436d4fa7221c00680e092a
     # form = LoginForm()
     name = flask_login.current_user.username
     print(name)
@@ -110,6 +113,7 @@ def comments_and_rating():
     num_review_data = len(review_data)
     for i in range(num_review_data):
         print([review_data[i].comment])
+<<<<<<< HEAD
         ratings.append(review_data[i].rating)
         comments.append(review_data[i].comment)
         movie_ids.append(review_data[i].movie_id)
@@ -118,6 +122,10 @@ def comments_and_rating():
         {'Ratings': ratings},
         {'Movie_ID': movie_ids}
     ])
+=======
+        comments.append(review_data[i].comment)
+    return flask.jsonify({'items': comments})
+>>>>>>> b9aab1efef33caa61a436d4fa7221c00680e092a
     # return flask.Response(json.dumps(info),  mimetype='application/json')
 
 @app.route("/homepage/<name>", methods=["GET", "POST"])
