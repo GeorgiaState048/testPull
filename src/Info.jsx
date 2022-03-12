@@ -15,7 +15,7 @@ export function Comment(props) {
 export function Rating(props) {
   return (
     <div>
-      {props.ratings} <button>Delete Rating</button>
+      {props.ratings}
     </div>
   );
 }
@@ -23,7 +23,7 @@ export function Rating(props) {
 export function MovieId(props) {
   return (
     <div>
-      {props.movieId}
+      Movie_ID: {props.movieId}
     </div>
   );
 }

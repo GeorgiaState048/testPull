@@ -103,13 +103,14 @@ def comments_and_rating():
     name = flask_login.current_user.username
     if flask.request.method == 'POST':
         info = json.loads(flask.request.data)
-        print(info)
         theComment = info['theComment']
-        info = AllData.query.filter_by(user=name).all()
-        for i, value in enumerate(info):
-            if theComment[i] == 'You have no comment here!':
+        theRating = info['theRating']
+        myData = AllData.query.filter_by(user=name).all()
+        for i, value in enumerate(myData):
+            if theComment[i] == 'You deleted this review' or theRating[i] == 'You deleted this review':
                 db.session.delete(value)
             value.comment = theComment[i]
+            value.rating = theRating[i]
             db.session.commit()
     comments = []
     ratings = []

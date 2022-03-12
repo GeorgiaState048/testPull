@@ -43,11 +43,21 @@ function App() {
   function replaceComment(currComment, index) {
     theComment.splice(index, 1, currComment);
   }
+  function replaceRating(currRating, index) {
+    theRating.splice(index, 1, currRating);
+  }
 
   function deleteComment(index) {
-    theComment.splice(index, 1, 'You have no comment here!');
+    theComment.splice(index, 1, 'You deleted this review');
     const newComments = [...theComment];
     setComment(newComments);
+    inputRef.current.value = ' ';
+  }
+
+  function deleteRating(index) {
+    theRating.splice(index, 1, 'You deleted this review');
+    const newRatings = [...theRating];
+    setRating(newRatings);
     inputRef.current.value = ' ';
   }
 
@@ -60,7 +70,9 @@ function App() {
   ));
   const myRatings = theRating.map((currElement, index) => (
     <h1>
+      <input type="text" ref={inputRef} onChange={(e) => replaceRating(e.target.value, index)} />
       {renderRatings(index)}
+      <button onClick={() => deleteRating(index)}>Delete Rating</button>
     </h1>
   ));
   const myMovieIds = theMovieId.map((currElement, index) => (
