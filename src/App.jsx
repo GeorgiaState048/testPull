@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-one-expression-per-line */
 import './App.css';
@@ -39,7 +40,7 @@ function App() {
     return <MovieId movieId={theMovieId[i]} />;
   }
 
-  function replaceElement(currComment, index) {
+  function replaceComment(currComment, index) {
     theComment.splice(index, 1, currComment);
   }
 
@@ -52,7 +53,7 @@ function App() {
 
   const myComments = theComment.map((currElement, index) => (
     <h1>
-      <input type="text" ref={inputRef} onChange={(e) => replaceElement(e.target.value, index)} />
+      <input type="text" ref={inputRef} onChange={(e) => replaceComment(e.target.value, index)} />
       {renderComments(index)}
       <button onClick={() => deleteComment(index)}>Delete Comment</button>
     </h1>
@@ -69,7 +70,14 @@ function App() {
   ));
   function handleClick() {
     // const val = theComment;
-    console.log(theComment);
+    const newData = { theComment, theRating };
+    fetch('/comments_and_ratings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData),
+    }).then(() => {
+      console.log('new comments posted');
+    });
     const newComments = [...theComment];
     setComment(newComments);
     inputRef.current.value = ' ';
