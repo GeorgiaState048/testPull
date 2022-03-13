@@ -7,7 +7,7 @@ import {
 export function Comment(props) {
   return (
     <div>
-      {props.comment}
+      Comment: {props.comment}
     </div>
   );
 }
@@ -15,7 +15,7 @@ export function Comment(props) {
 export function Rating(props) {
   return (
     <div>
-      {props.ratings}
+      Rating: {props.ratings}
     </div>
   );
 }

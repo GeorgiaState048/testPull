@@ -14,6 +14,7 @@ function App() {
   const [theComment, setComment] = useState([]);
   const [theRating, setRating] = useState([]);
   const [theMovieId, setMovieId] = useState([]);
+  const [message, setMessage] = useState('The message has not been saved yet!');
   const inputRef = useRef(null);
   // const [inputComment, setInputComment] = useState('');
   useEffect(() => {
@@ -54,32 +55,34 @@ function App() {
     inputRef.current.value = ' ';
   }
 
-  function deleteRating(index) {
-    theRating.splice(index, 1, 'You deleted this review');
-    const newRatings = [...theRating];
-    setRating(newRatings);
-    inputRef.current.value = ' ';
-  }
+  // function deleteRating(index) {
+  //   theRating.splice(index, 1, 'You deleted this review');
+  //   const newRatings = [...theRating];
+  //   setRating(newRatings);
+  //   inputRef.current.value = ' ';
+  // }
 
   const myComments = theComment.map((currElement, index) => (
-    <h1>
-      <input type="text" ref={inputRef} onChange={(e) => replaceComment(e.target.value, index)} />
+    <p className="rowC">
       {renderComments(index)}
+      <textarea rows="1" cols="20" ref={inputRef} onChange={(e) => replaceComment(e.target.value, index)} />
       <button onClick={() => deleteComment(index)}>Delete Comment</button>
-    </h1>
+    </p>
   ));
   const myRatings = theRating.map((currElement, index) => (
-    <h1>
-      <input type="text" ref={inputRef} onChange={(e) => replaceRating(e.target.value, index)} />
+    <p className="rowC">
       {renderRatings(index)}
-      <button onClick={() => deleteRating(index)}>Delete Rating</button>
-    </h1>
+      <textarea rows="1" cols="10" ref={inputRef} onChange={(e) => replaceRating(e.target.value, index)} />
+    </p>
   ));
   const myMovieIds = theMovieId.map((currElement, index) => (
-    <h1>
+    <p className="rowC">
       {renderMovieIds(index)}
-    </h1>
+    </p>
   ));
+  function messageSaved() {
+    setMessage('Your message has been saved!');
+  }
   function handleClick() {
     // const val = theComment;
     const newData = { theComment, theRating };
@@ -88,25 +91,37 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData),
     }).then(() => {
-      console.log('new comments posted');
+      messageSaved();
     });
     const newComments = [...theComment];
     setComment(newComments);
     inputRef.current.value = ' ';
   }
   return (
-    <div>
-      {
-        myRatings
-      }
-      {
-        myMovieIds
-      }
-      {
-        myComments
-      }
-      <button onClick={handleClick}>Click me!</button>
-    </div>
+    <body>
+      <h1>Edit or Delete your comments and ratings!</h1>
+      <div className="rowC color">
+        <div>
+          {
+              myMovieIds
+          }
+        </div>
+        <div>
+          {
+              myRatings
+          }
+        </div>
+        <div>
+          {
+              myComments
+          }
+        </div>
+      </div>
+      {message}
+      <div className="up">
+        <button onClick={handleClick}>Save Data</button>
+      </div>
+    </body>
   );
 }
 
