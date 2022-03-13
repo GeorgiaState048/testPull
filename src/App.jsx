@@ -14,23 +14,25 @@ function App() {
   const [theComment, setComment] = useState([]);
   const [theRating, setRating] = useState([]);
   const [theMovieId, setMovieId] = useState([]);
-  const [message, setMessage] = useState('The message has not been saved yet!');
+  const [theUser, setUser] = useState('');
+  const [message, setMessage] = useState('Click \'Save Data\' to save your reviews!');
   const inputRef = useRef(null);
-  // const [inputComment, setInputComment] = useState('');
   useEffect(() => {
     const getData = async () => {
       const response = await fetch('/comments_and_ratings');
       const data = await response.json();
+      console.log(data);
       const comments = data[0];
       const ratings = data[1];
       const movieId = data[2];
+      const name = data[3];
       setComment(comments.Comments);
       setRating(ratings.Ratings);
       setMovieId(movieId.Movie_ID);
+      setUser(name.Name);
     };
     getData();
   }, []);
-
   function renderComments(i) {
     return <Comment comment={theComment[i]} />;
   }
@@ -41,6 +43,7 @@ function App() {
     return <MovieId movieId={theMovieId[i]} />;
   }
 
+  // replaces comments or ratings
   function replaceComment(currComment, index) {
     theComment.splice(index, 1, currComment);
   }
@@ -48,6 +51,7 @@ function App() {
     theRating.splice(index, 1, currRating);
   }
 
+  // deletes specific comment
   function deleteComment(index) {
     theComment.splice(index, 1, 'You deleted this review');
     const newComments = [...theComment];
@@ -55,13 +59,7 @@ function App() {
     inputRef.current.value = ' ';
   }
 
-  // function deleteRating(index) {
-  //   theRating.splice(index, 1, 'You deleted this review');
-  //   const newRatings = [...theRating];
-  //   setRating(newRatings);
-  //   inputRef.current.value = ' ';
-  // }
-
+  // map function used to create display all comments and ratings
   const myComments = theComment.map((currElement, index) => (
     <p className="rowC">
       {renderComments(index)}
@@ -80,18 +78,15 @@ function App() {
       {renderMovieIds(index)}
     </p>
   ));
-  function messageSaved() {
-    setMessage('Your message has been saved!');
-  }
+  const link = `/homepage/${theUser}`; // link to go back to the previous page
   function handleClick() {
-    // const val = theComment;
     const newData = { theComment, theRating };
     fetch('/comments_and_ratings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData),
     }).then(() => {
-      messageSaved();
+      setMessage('Your reviews have been saved! Refresh the page!');
     });
     const newComments = [...theComment];
     setComment(newComments);
@@ -99,7 +94,7 @@ function App() {
   }
   return (
     <body>
-      <h1>Edit or Delete your comments and ratings!</h1>
+      <h1 className="color">Edit or Delete your comments and ratings!</h1>
       <div className="rowC color">
         <div>
           {
@@ -117,10 +112,13 @@ function App() {
           }
         </div>
       </div>
-      {message}
+      <div className="color">
+        {message}
+      </div>
       <div className="up">
         <button onClick={handleClick}>Save Data</button>
       </div>
+      <a href={link}>Click Here to Leave more Comments!</a>
     </body>
   );
 }

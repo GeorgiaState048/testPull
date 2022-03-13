@@ -125,7 +125,8 @@ def comments_and_rating():
     return flask.jsonify([
         {'Comments': comments},
         {'Ratings': ratings},
-        {'Movie_ID': movie_ids}
+        {'Movie_ID': movie_ids},
+        {'Name': name},
     ])
     # return flask.Response(json.dumps(info),  mimetype='application/json')
 
